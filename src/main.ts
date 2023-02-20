@@ -7,12 +7,22 @@ type ItemResponse = GoogleAppsScript.Forms.ItemResponse;
 
 type DriveFile = GoogleAppsScript.Drive.File;
 
+/**
+ * 最新のフォーム回答結果を取得する
+ * @param form Form オブジェクト
+ * @returns 最新のフォーム回答結果
+ */
 function getLatestFormResponse(form: Form): FormResponse {
   const responses: FormResponse[] = form.getResponses();
 
   return responses[responses.length - 1];
 }
 
+/**
+ * ポストするメッセージのヘッダー（タイトル）を作成する
+ * @param form Form オブジェクト
+ * @returns ヘッダー（タイトル）文字列
+ */
 function createPostHeader(form: Form): string {
   const latestResponse: FormResponse =
     form.getResponses()[form.getResponses().length - 1];
@@ -21,6 +31,11 @@ function createPostHeader(form: Form): string {
   return `[info][title]お問い合わせ（${timestamp}）[/title]`;
 }
 
+/**
+ * 日付をフォーマットする
+ * @param date Date オブジェクト
+ * @returns フォーマットした日付の文字列
+ */
 export function formatDate(date: BaseDate): string {
   const padding = (n: number) => String(n).padStart(2, "0");
 
@@ -34,6 +49,11 @@ export function formatDate(date: BaseDate): string {
   return `${year}/${month}/${day} ${hour}:${minutes}:${seconds}`;
 }
 
+/**
+ * ポストするメッセージを作成する
+ * @param itemResponse itemResponse オブジェクト
+ * @returns ポストするメッセージ
+ */
 function createPostMessage(itemResponse: ItemResponse): string {
   const title: string = itemResponse.getItem().getTitle();
   const response: string = itemResponse.getResponse().toString();
@@ -41,6 +61,13 @@ function createPostMessage(itemResponse: ItemResponse): string {
   return `${title}：\n${response}\n\n`;
 }
 
+/**
+ * Chatwork の特定のチャットルームにメッセージ（とファイル）をポストする
+ * @param apiToken Chatwork の API Token
+ * @param roomId ターゲットとなるチャットルームの Room ID
+ * @param message ポストするメッセージ
+ * @param file ポストするファイル
+ */
 function postFormDataToChatwork(
   apiToken: string,
   roomId: string,
