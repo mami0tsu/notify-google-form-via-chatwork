@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "fmt": "prettier --write .",
     "test": "jest"
   },
   "repository": {

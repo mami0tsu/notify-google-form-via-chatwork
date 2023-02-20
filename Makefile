@@ -9,9 +9,6 @@ clean: ## clean
 	clasp logout
 	npm uninstall -g @google/clasp
 
-fmt: ## format with prettier
-	npx prettier --write .
-
 v%: ## push git tag
 	git tag v$*
 	git push origin v$*
